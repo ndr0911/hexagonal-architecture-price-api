@@ -1,4 +1,4 @@
-package es.inditexprueba.hexagonalarchitecturepriceapi;
+package es.acompany.hexagonal.architecture.price.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
