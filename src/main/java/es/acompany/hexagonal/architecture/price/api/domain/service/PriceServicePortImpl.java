@@ -1,10 +1,10 @@
-package es.acompany.hexagonal.architecture.price.api.domain.service.impl;
+package es.acompany.hexagonal.architecture.price.api.domain.service;
 
 import es.acompany.hexagonal.architecture.price.api.domain.exception.PriceNotFoundException;
 import es.acompany.hexagonal.architecture.price.api.domain.model.PriceDto;
 import es.acompany.hexagonal.architecture.price.api.domain.model.PriceResponse;
 import es.acompany.hexagonal.architecture.price.api.domain.port.PricePersistentPort;
-import es.acompany.hexagonal.architecture.price.api.domain.service.PriceService;
+import es.acompany.hexagonal.architecture.price.api.domain.port.PriceServicePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class PriceServiceImpl implements PriceService {
+public class PriceServicePortImpl implements PriceServicePort {
 
     private final PricePersistentPort pricePersistentPort;
 
     @Autowired
-    public PriceServiceImpl(PricePersistentPort pricePersistentPort) {
+    public PriceServicePortImpl(PricePersistentPort pricePersistentPort) {
         this.pricePersistentPort = pricePersistentPort;
     }
 

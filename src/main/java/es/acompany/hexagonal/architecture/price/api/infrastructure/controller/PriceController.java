@@ -1,7 +1,7 @@
-package es.acompany.hexagonal.architecture.price.api.infrastructure.rest.controller;
+package es.acompany.hexagonal.architecture.price.api.infrastructure.controller;
 
 import es.acompany.hexagonal.architecture.price.api.domain.model.PriceResponse;
-import es.acompany.hexagonal.architecture.price.api.domain.service.PriceService;
+import es.acompany.hexagonal.architecture.price.api.domain.port.PriceServicePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,10 +21,10 @@ import java.time.LocalDateTime;
 @Validated
 public class PriceController {
 
-    private final PriceService priceService;
+    private final PriceServicePort priceServicePort;
 
-    public PriceController(PriceService priceService) {
-        this.priceService = priceService;
+    public PriceController(PriceServicePort priceServicePort) {
+        this.priceServicePort = priceServicePort;
     }
 
     /**
@@ -49,6 +49,6 @@ public class PriceController {
             @Parameter(description = "ID de la marca", example = "0")
             @RequestParam @NotNull Integer brandId) {
 
-        return ResponseEntity.ok(priceService.getPrice(applicationDate, productId, brandId));
+        return ResponseEntity.ok(priceServicePort.getPrice(applicationDate, productId, brandId));
     }
 }
