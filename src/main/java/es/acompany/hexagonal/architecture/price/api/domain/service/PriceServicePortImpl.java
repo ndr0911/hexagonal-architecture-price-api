@@ -1,6 +1,7 @@
 package es.acompany.hexagonal.architecture.price.api.domain.service;
 
 import es.acompany.hexagonal.architecture.price.api.domain.exception.PriceNotFoundException;
+import es.acompany.hexagonal.architecture.price.api.domain.exception.ProductNotFoundException;
 import es.acompany.hexagonal.architecture.price.api.domain.model.PriceDto;
 import es.acompany.hexagonal.architecture.price.api.domain.model.PriceResponse;
 import es.acompany.hexagonal.architecture.price.api.domain.port.PricePersistentPort;
@@ -31,6 +32,7 @@ public class PriceServicePortImpl implements PriceServicePort {
      * @param brandId         The ID of the brand associated with the product.
      * @return A {@link PriceResponse} containing the price details.
      * @throws PriceNotFoundException if no price is found for the given criteria.
+     * @throws ProductNotFoundException If no price is found for the given parameters.
      */
     @Override
     public PriceResponse getPrice(LocalDateTime applicationDate, Integer productId, Integer brandId) {
@@ -38,6 +40,11 @@ public class PriceServicePortImpl implements PriceServicePort {
         // Fetch all prices that match the given product, brand, and date range
         List<PriceDto> prices = pricePersistentPort.findByProductIdAndBrandIdAndStartDateBeforeAndEndDateAfter(
                 productId, brandId, applicationDate, applicationDate);
+
+        // If no prices are found for the given parameters, throw an exception
+        if (prices.isEmpty()) {
+            throw new ProductNotFoundException("No price found for product " + productId + " and brand " + brandId + " at " + applicationDate);
+        }
 
         // Select the price with the highest priority or throw an exception if no price is found
         return prices.stream()

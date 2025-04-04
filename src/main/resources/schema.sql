@@ -1,4 +1,4 @@
-CREATE TABLE prices
+CREATE TABLE IF NOT EXISTS prices
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     brand_id   INT            NOT NULL,
