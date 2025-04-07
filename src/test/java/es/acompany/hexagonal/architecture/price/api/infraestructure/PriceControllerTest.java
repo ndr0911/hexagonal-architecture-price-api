@@ -70,5 +70,38 @@ public class PriceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(38.95));
     }
+
+    // Test Error
+    @Test
+    public void shouldReturnBadRequest_whenApplicationDateIsMissing() throws Exception {
+        mockMvc.perform(get("/prices")
+                        .param("productId", "35455")
+                        .param("brandId", "1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Bad Request"))
+                .andExpect(jsonPath("$.details[0]").value("Missing required parameter: applicationDate"));
+    }
+
+    @Test
+    public void shouldReturnBadRequest_whenProductIdIsNotValid() throws Exception {
+        mockMvc.perform(get("/prices")
+                        .param("applicationDate", "2025-01-01T00:00:00")
+                        .param("productId", "abc")
+                        .param("brandId", "1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Bad Request"))
+                .andExpect(jsonPath("$.details[0]").value("'productId' should be a valid 'Integer' and 'abc' isn't"));
+    }
+
+    @Test
+    public void shouldReturnNotFound_whenPriceIsNotFound() throws Exception {
+        mockMvc.perform(get("/prices")
+                        .param("applicationDate", "2025-01-01T00:00:00")
+                        .param("productId", "99999")
+                        .param("brandId", "1"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Not Found"))
+                .andExpect(jsonPath("$.details[0]").value("No price found for product 99999 and brand 1 at 2025-01-01T00:00"));
+    }
 }
 
